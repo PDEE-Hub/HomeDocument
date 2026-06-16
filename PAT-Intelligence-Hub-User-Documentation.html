@@ -1,0 +1,1906 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PAT Intelligence Hub — User Documentation</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    /* ========== RESET ========== */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* ========== CSS VARIABLES ========== */
+    :root {
+      /* Dark Mode (Default) */
+      --bg-dark: #050a15;
+      --bg-main: #0a0f1a;
+      --bg-light: #0f1628;
+      --bg-hover: #141f38;
+      
+      --text-primary: #e8edf5;
+      --text-secondary: #8899b0;
+      --text-tertiary: #4a5a70;
+      
+      --accent-primary: #0066cc;
+      --accent-secondary: #ffa500;
+      --accent-teal: #1db8a3;
+      --accent-green: #28a745;
+      --accent-red: #e74c3c;
+      
+      --border: rgba(255, 255, 255, 0.08);
+      --border-light: rgba(255, 255, 255, 0.12);
+      
+      --font: 'IBM Plex Sans Thai', sans-serif;
+      --mono: 'IBM Plex Mono', monospace;
+    }
+
+    [data-theme="light"] {
+      --bg-dark: #f5f7fa;
+      --bg-main: #ffffff;
+      --bg-light: #f0f3f7;
+      --bg-hover: #e8ecf1;
+      
+      --text-primary: #1a2332;
+      --text-secondary: #4a5f7f;
+      --text-tertiary: #7a8fa3;
+      
+      --border: rgba(0, 0, 0, 0.08);
+      --border-light: rgba(0, 0, 0, 0.12);
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--font);
+      background: linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-main) 50%, var(--bg-light) 100%);
+      color: var(--text-primary);
+      min-height: 100vh;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      transition: background 0.3s ease;
+    }
+
+    /* ========== BACKGROUND ORBS ========== */
+    .bg-gradient-orbs {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(100px);
+      opacity: 0.04;
+      mix-blend-mode: screen;
+    }
+
+    .orb-primary {
+      width: 800px;
+      height: 800px;
+      background: var(--accent-primary);
+      top: -300px;
+      left: -200px;
+      animation: drift-primary 25s ease-in-out infinite;
+    }
+
+    .orb-secondary {
+      width: 600px;
+      height: 600px;
+      background: var(--accent-secondary);
+      bottom: -200px;
+      right: -150px;
+      animation: drift-secondary 30s ease-in-out infinite;
+    }
+
+    .orb-teal {
+      width: 500px;
+      height: 500px;
+      background: var(--accent-teal);
+      top: 50%;
+      right: 10%;
+      animation: drift-teal 28s ease-in-out infinite;
+    }
+
+    @keyframes drift-primary {
+      from { transform: translate(0, 0); }
+      to { transform: translate(60px, 80px); }
+    }
+
+    @keyframes drift-secondary {
+      from { transform: translate(0, 0); }
+      to { transform: translate(-50px, -60px); }
+    }
+
+    @keyframes drift-teal {
+      from { transform: translate(0, 0); }
+      to { transform: translate(40px, -40px); }
+    }
+
+    .grid-texture {
+      position: fixed;
+      inset: 0;
+      background-image: 
+        linear-gradient(rgba(0, 102, 204, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 102, 204, 0.02) 1px, transparent 1px);
+      background-size: 80px 80px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ========== HEADER ========== */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 40px;
+      background: rgba(5, 10, 21, 0.95);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      transition: background 0.3s ease;
+    }
+
+    [data-theme="light"] header {
+      background: rgba(255, 255, 255, 0.95);
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .logo {
+      font-weight: 700;
+      font-size: 16px;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .logo-icon {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-teal) 100%);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 18px;
+      color: #fff;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .theme-toggle {
+      background: none;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+      color: var(--text-primary);
+      transition: color 0.3s ease;
+    }
+
+    .theme-toggle:hover {
+      color: var(--accent-primary);
+    }
+
+    /* ========== SIDEBAR NAVIGATION ========== */
+    .sidebar {
+      position: fixed;
+      left: 0;
+      top: 70px;
+      width: 280px;
+      height: calc(100vh - 70px);
+      background: rgba(10, 15, 26, 0.8);
+      backdrop-filter: blur(20px);
+      border-right: 1px solid var(--border);
+      padding: 30px 0;
+      overflow-y: auto;
+      z-index: 90;
+      transition: transform 0.3s ease;
+    }
+
+    [data-theme="light"] .sidebar {
+      background: rgba(245, 247, 250, 0.8);
+    }
+
+    .sidebar-item {
+      padding: 12px 20px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border-left: 3px solid transparent;
+      font-size: 14px;
+    }
+
+    .sidebar-item:hover {
+      background: rgba(0, 102, 204, 0.1);
+      color: var(--accent-primary);
+      border-left-color: var(--accent-primary);
+    }
+
+    .sidebar-item.active {
+      background: rgba(0, 102, 204, 0.15);
+      color: var(--accent-primary);
+      border-left-color: var(--accent-primary);
+      font-weight: 600;
+    }
+
+    .sidebar-section-title {
+      padding: 15px 20px;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-tertiary);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-top: 15px;
+    }
+
+    /* ========== MAIN CONTENT ========== */
+    .main-content {
+      margin-left: 280px;
+      margin-top: 70px;
+      padding: 60px 50px;
+      position: relative;
+      z-index: 1;
+      max-width: 1200px;
+    }
+
+    .section {
+      display: none;
+      animation: fadeIn 0.5s ease;
+    }
+
+    .section.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ========== SECTION STYLES ========== */
+    h1 {
+      font-size: 36px;
+      font-weight: 700;
+      margin-bottom: 15px;
+      background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-teal) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    h2 {
+      font-size: 24px;
+      font-weight: 700;
+      margin-top: 40px;
+      margin-bottom: 20px;
+      color: var(--text-primary);
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--border-light);
+    }
+
+    h3 {
+      font-size: 18px;
+      font-weight: 600;
+      margin-top: 30px;
+      margin-bottom: 15px;
+      color: var(--accent-primary);
+    }
+
+    p {
+      line-height: 1.8;
+      margin-bottom: 15px;
+      color: var(--text-secondary);
+      font-size: 15px;
+    }
+
+    strong {
+      color: var(--text-primary);
+    }
+
+    /* ========== FEATURES & STEPS ========== */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      margin: 30px 0;
+    }
+
+    .feature-card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-light);
+      border-radius: 12px;
+      padding: 25px;
+      transition: all 0.3s ease;
+    }
+
+    .feature-card:hover {
+      background: rgba(0, 102, 204, 0.1);
+      border-color: var(--accent-primary);
+      transform: translateY(-5px);
+    }
+
+    .feature-card-icon {
+      font-size: 32px;
+      margin-bottom: 15px;
+    }
+
+    .feature-card-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: var(--text-primary);
+    }
+
+    .feature-card-desc {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .step-item {
+      background: rgba(255, 255, 255, 0.05);
+      border-left: 4px solid var(--accent-primary);
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 15px;
+    }
+
+    .step-number {
+      display: inline-block;
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-teal) 100%);
+      border-radius: 50%;
+      color: #fff;
+      font-weight: 700;
+      text-align: center;
+      line-height: 32px;
+      margin-right: 12px;
+      font-size: 14px;
+    }
+
+    .step-content {
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    .step-title {
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 5px;
+    }
+
+    .step-desc {
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    /* ========== TABLE ========== */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 25px 0;
+      background: rgba(255, 255, 255, 0.02);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    th {
+      background: rgba(0, 102, 204, 0.15);
+      padding: 15px;
+      text-align: left;
+      font-weight: 700;
+      color: var(--accent-primary);
+      border-bottom: 2px solid var(--border-light);
+    }
+
+    td {
+      padding: 12px 15px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-secondary);
+      font-size: 14px;
+    }
+
+    tr:hover {
+      background: rgba(0, 102, 204, 0.08);
+    }
+
+    /* ========== ALERTS ========== */
+    .alert {
+      padding: 15px 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      border-left: 4px solid;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .alert-info {
+      background: rgba(0, 102, 204, 0.1);
+      border-left-color: var(--accent-primary);
+      color: var(--accent-primary);
+    }
+
+    .alert-success {
+      background: rgba(40, 167, 69, 0.1);
+      border-left-color: var(--accent-green);
+      color: var(--accent-green);
+    }
+
+    .alert-warning {
+      background: rgba(255, 165, 0, 0.1);
+      border-left-color: var(--accent-secondary);
+      color: var(--accent-secondary);
+    }
+
+    .alert-danger {
+      background: rgba(231, 76, 60, 0.1);
+      border-left-color: var(--accent-red);
+      color: var(--accent-red);
+    }
+
+    /* ========== CODE BLOCK ========== */
+    .code-block {
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid var(--border-light);
+      border-radius: 8px;
+      padding: 15px;
+      overflow-x: auto;
+      margin: 15px 0;
+      font-family: var(--mono);
+      font-size: 13px;
+      color: var(--accent-teal);
+      line-height: 1.5;
+    }
+
+    /* ========== FOOTER ========== */
+    footer {
+      margin-left: 280px;
+      padding: 40px 50px;
+      background: rgba(5, 10, 21, 0.5);
+      border-top: 1px solid var(--border);
+      color: var(--text-secondary);
+      font-size: 13px;
+      text-align: center;
+    }
+
+    /* ========== RESPONSIVE ========== */
+    @media (max-width: 768px) {
+      .sidebar {
+        width: 250px;
+      }
+
+      .main-content {
+        margin-left: 250px;
+        padding: 40px 25px;
+      }
+
+      h1 {
+        font-size: 28px;
+      }
+
+      h2 {
+        font-size: 20px;
+      }
+
+      footer {
+        margin-left: 250px;
+        padding: 30px 25px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .sidebar {
+        width: 100%;
+        height: auto;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+        padding: 15px 0;
+        position: relative;
+        top: 0;
+        max-height: 50vh;
+        overflow-y: auto;
+      }
+
+      .main-content {
+        margin-left: 0;
+        padding: 30px 20px;
+      }
+
+      header {
+        padding: 0 20px;
+      }
+
+      h1 {
+        font-size: 24px;
+      }
+
+      footer {
+        margin-left: 0;
+        padding: 20px;
+      }
+    }
+
+  </style>
+</head>
+<body>
+  <div class="bg-gradient-orbs">
+    <div class="orb orb-primary"></div>
+    <div class="orb orb-secondary"></div>
+    <div class="orb orb-teal"></div>
+  </div>
+  <div class="grid-texture"></div>
+
+  <!-- ========== HEADER ========== -->
+  <header>
+    <div class="header-left">
+      <a href="#" class="logo">
+        <div class="logo-icon">📚</div>
+        <span>Documentation Hub</span>
+      </a>
+    </div>
+    <div class="header-right">
+      <button class="theme-toggle" id="themeToggle" title="Toggle Dark/Light Mode">🌙</button>
+    </div>
+  </header>
+
+  <!-- ========== SIDEBAR ========== -->
+  <nav class="sidebar">
+    <div class="sidebar-section-title">🏠 บ้าน</div>
+    <div class="sidebar-item active" onclick="showSection('overview')">📖 ภาพรวมทั่วไป</div>
+
+    <div class="sidebar-section-title">📚 คู่มือการใช้งาน</div>
+    <div class="sidebar-item" onclick="showSection('homepage-guide')">🏢 Homepage Guide</div>
+    <div class="sidebar-item" onclick="showSection('financial-guide')">💰 Financial Dashboard</div>
+    <div class="sidebar-item" onclick="showSection('mou-guide')">📊 MOU Performance</div>
+    <div class="sidebar-item" onclick="showSection('enablers-guide')">⚙️ CBE Enablers</div>
+    <div class="sidebar-item" onclick="showSection('linkage-guide')">🔗 Linkage Map</div>
+
+    <div class="sidebar-section-title">📋 ข้อมูลอ้างอิง</div>
+    <div class="sidebar-item" onclick="showSection('data-dictionary')">📑 Data Dictionary</div>
+    <div class="sidebar-item" onclick="showSection('faq')">❓ คำถามที่พบบ่อย</div>
+  </nav>
+
+  <!-- ========== MAIN CONTENT ========== -->
+  <main class="main-content">
+
+    <!-- ========== OVERVIEW ========== -->
+    <section id="overview" class="section active">
+      <h1>📚 PAT Intelligence Hub — คู่มือการใช้งาน</h1>
+      <p style="font-size: 16px; margin-top: 20px;">ยินดีต้อนรับเข้าสู่ PAT Intelligence Hub! 🎯</p>
+      <p>เอกสารนี้จะช่วยให้คุณเข้าใจและใช้งาน Hub ทั้งหมดได้อย่างมีประสิทธิภาพ</p>
+
+      <h2>🎯 Hub นี้มี 4 Dashboard หลัก</h2>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="feature-card-icon">💰</div>
+          <div class="feature-card-title">Financial Analytics</div>
+          <div class="feature-card-desc">ดูรายรับ-รายจ่าย รายรับตามประเภท และการวิเคราะห์เปรียบเทียบระหว่าง 4 สถานีบริการท่าเรือ</div>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-card-icon">📊</div>
+          <div class="feature-card-title">MOU Performance 2569</div>
+          <div class="feature-card-desc">ติดตาม KPI ตามสัญญาวัตถุประสงค์ 21 รายการ การคาดการณ์ (Forecast) และแผนปรับปรุง</div>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-card-icon">⚙️</div>
+          <div class="feature-card-title">CBE Enablers Assessment</div>
+          <div class="feature-card-desc">ประเมินระดับความสำเร็จของ 10 มิติการเปลี่ยนแปลง (SE-AM CBE) พร้อมคะแนนความสำเร็จ</div>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-card-icon">🔗</div>
+          <div class="feature-card-title">Enabler Linkage Map</div>
+          <div class="feature-card-desc">แสดงการเชื่อมโยงระหว่าง 10 มิติ CBE และเอกสารหลักฐาน (Evidence) ที่ยืนยัน</div>
+        </div>
+      </div>
+
+      <h2>✨ ส่วนประกอบหลักของ Hub</h2>
+      <div class="step-item">
+        <span class="step-number">1</span>
+        <div class="step-content">
+          <div class="step-title">🔍 Navigation Bar (บน)</div>
+          <div class="step-desc">ค้นหา + สำหรับการระบุตำแหน่ง และลิงก์ไปยัง Dashboard ต่างๆ</div>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <span class="step-number">2</span>
+        <div class="step-content">
+          <div class="step-title">🏙️ Isometric Pixel City (ใจกลาง)</div>
+          <div class="step-desc">แสดง Dashboard 4 หลังอาคาร + Character ที่สะท้อนสถานะ KPI ของระบบ</div>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <span class="step-number">3</span>
+        <div class="step-content">
+          <div class="step-title">📲 Dashboard Cards</div>
+          <div class="step-desc">ปุ่มเข้า Dashboard / ปุ่ม Export / ปุ่ม "หรือไปเลยได้เลย" ผ่าน Card</div>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <span class="step-number">4</span>
+        <div class="step-content">
+          <div class="step-title">👤 Authentication</div>
+          <div class="step-desc">Google Sign-In ด้วยอีเมล @port.co.th + PIN 2FA (สำหรับ Financial)</div>
+        </div>
+      </div>
+
+      <h2>🚀 เริ่มต้น 3 ขั้นตอน</h2>
+      <table>
+        <tr>
+          <th>ขั้นตอน</th>
+          <th>คำอธิบาย</th>
+          <th>ระยะเวลา</th>
+        </tr>
+        <tr>
+          <td><strong>1. เข้าสู่ Hub</strong></td>
+          <td>ไปที่ pdee-hub.github.io แล้วเข้า Google Sign-In</td>
+          <td>1 นาที</td>
+        </tr>
+        <tr>
+          <td><strong>2. เลือก Dashboard</strong></td>
+          <td>คลิก Card หรือปุ่มในหน้า Hub เพื่อเข้า Dashboard</td>
+          <td>30 วินาที</td>
+        </tr>
+        <tr>
+          <td><strong>3. ดูข้อมูล / Export</strong></td>
+          <td>กรองข้อมูล + ดู KPI + Export เป็น PDF/Excel</td>
+          <td>5 นาที</td>
+        </tr>
+      </table>
+
+      <div class="alert alert-info">
+        <strong>💡 เคล็ดลับ:</strong> ไปที่ Documentation Hub นี้เมื่อจำเป็น — ทั้ง 5 ส่วนเนื้อหาได้ไว้ที่เมนูด้านซ้าย
+      </div>
+    </section>
+
+    <!-- ========== HOMEPAGE GUIDE ========== -->
+    <section id="homepage-guide" class="section">
+      <h1>🏢 Homepage Guide</h1>
+      <p>วิธีเข้าใช้และโต้ตอบกับหน้าแรก PAT Intelligence Hub</p>
+
+      <h2>🎯 ส่วนประกอบหลัก</h2>
+
+      <h3>1️⃣ Navigation Bar (บนสุด)</h3>
+      <p>บ้านกิจกรรมสำคัญทั้งหมดขึ้นต้นจากสถานที่แรก</p>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="feature-card-icon">🏠</div>
+          <div class="feature-card-title">Logo & Home</div>
+          <div class="feature-card-desc">คลิกเพื่อกลับไปหน้าแรก Hub</div>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-card-icon">🔍</div>
+          <div class="feature-card-title">Search Bar</div>
+          <div class="feature-card-desc">ค้นหา Dashboard หรือคำสำคัญ (ยังในการพัฒนา)</div>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-card-icon">🔔</div>
+          <div class="feature-card-title">Notification Bell</div>
+          <div class="feature-card-desc">แจ้งเตือนข้อมูลใหม่ / ปัญหาระบบ / อัปเดต KPI</div>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-card-icon">🌙☀️</div>
+          <div class="feature-card-title">Theme Toggle</div>
+          <div class="feature-card-desc">สลับ Dark Mode ↔ Light Mode ตามใจชอบ</div>
+        </div>
+      </div>
+
+      <h3>2️⃣ Filter & Search Section</h3>
+      <p>ค้นหา Dashboard ที่ต้องการง่ายๆ</p>
+      <div class="code-block">
+        ทุก Dashboard • Financial • MOU • CBE • Linkage
+      </div>
+      <p style="font-size: 13px;">- ทุก Dashboard = แสดงทั้งหมด<br>- Financial = แสดงเฉพาะ Financial Analytics<br>- เป็นต้น</p>
+
+      <h3>3️⃣ Dashboard Cards</h3>
+      <p>ปุ่มเข้าสู่ Dashboard แต่ละตัว</p>
+      <table>
+        <tr>
+          <th>ปุ่มใน Card</th>
+          <th>ทำอะไร</th>
+          <th>หมายเหตุ</th>
+        </tr>
+        <tr>
+          <td><strong>🔗 Open</strong></td>
+          <td>เปิด Dashboard ใหม่</td>
+          <td>ไป URL ใหม่ (Tab ใหม่)</td>
+        </tr>
+        <tr>
+          <td><strong>📥 Export</strong></td>
+          <td>ส่งออก PDF / Excel</td>
+          <td>ส่งความเห็นไปยัง Export button ใน Dashboard เอง</td>
+        </tr>
+        <tr>
+          <td><strong>📖 View Guide</strong></td>
+          <td>เปิดคู่มือ Dashboard นั้นๆ</td>
+          <td>ไปที่ Documentation Hub นี้</td>
+        </tr>
+      </table>
+
+      <h3>4️⃣ Status Indicator & Character Animation</h3>
+      <p>ตัวการ์ตูน + สี Badge แสดงสถานะ Hub</p>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="feature-card-icon">🟢</div>
+          <div class="feature-card-title">Green (Healthy)</div>
+          <div class="feature-card-desc">Dashboard ทั้งหมดปกติ ข้อมูล sync ถูกต้อง</div>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-card-icon">🟡</div>
+          <div class="feature-card-title">Yellow (Caution)</div>
+          <div class="feature-card-desc">มีปัญหา 1-2 Dashboard หรือ data lag นิดหน่อย</div>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-card-icon">🔴</div>
+          <div class="feature-card-title">Red (Alert)</div>
+          <div class="feature-card-desc">ปัญหาร้ายแรง หลายๆ Dashboard down</div>
+        </div>
+      </div>
+
+      <h3>5️⃣ Footer</h3>
+      <p>ลิงก์สำหรับเอกสาร + Support + Legal</p>
+      <ul style="margin-left: 20px; margin-bottom: 15px;">
+        <li><strong>Resources:</strong> User Documentation, Training Videos, FAQ</li>
+        <li><strong>Support:</strong> Contact Admin, Report Issue, System Status</li>
+        <li><strong>Legal:</strong> Privacy Policy, Data Usage Terms, Security Info</li>
+      </ul>
+
+      <div class="alert alert-success">
+        <strong>✅ Pro Tips:</strong><br>
+        • ใช้ Dark Mode ที่มืด สำหรับชั่วโมงค่ำ<br>
+        • กด Notification Bell เพื่อรู้ข้อมูลใหม่ทันที<br>
+        • ใช้ Filter Tag เพื่อหาป Dashboards ได้ง่าย
+      </div>
+    </section>
+
+    <!-- ========== FINANCIAL DASHBOARD GUIDE ========== -->
+    <section id="financial-guide" class="section">
+      <h1>💰 Financial Analytics Dashboard — Guide</h1>
+      <p>ติดตาม KPI ด้านการเงิน และวิเคราะห์รายรับ-รายจ่ายของ 4 สถานีบริการ</p>
+
+      <h2>📊 ส่วนประกอบหลัก</h2>
+
+      <h3>1️⃣ KPI Cards (บนสุด)</h3>
+      <p>แสดง 5 KPI สำคัญด้านการเงิน</p>
+      <table>
+        <tr>
+          <th>KPI</th>
+          <th>ความหมาย</th>
+          <th>หน่วย</th>
+          <th>เป้าหมาย FY2569</th>
+        </tr>
+        <tr>
+          <td><strong>YTD Revenue</strong></td>
+          <td>รวมรายรับจาก 4 สถาน</td>
+          <td>ล้านบาท (M)</td>
+          <td>7,700</td>
+        </tr>
+        <tr>
+          <td><strong>YTD Expense</strong></td>
+          <td>รวมรายจ่ายจาก 4 สถาน</td>
+          <td>M</td>
+          <td>4,500</td>
+        </tr>
+        <tr>
+          <td><strong>Profit Margin</strong></td>
+          <td>กำไร ÷ รายรับ × 100</td>
+          <td>%</td>
+          <td>35-42%</td>
+        </tr>
+        <tr>
+          <td><strong>Port Comparison</strong></td>
+          <td>เปรียบเทียบรายรับ: ทกท. vs ทลฉ. vs ทรน.</td>
+          <td>M</td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td><strong>Forecast Accuracy</strong></td>
+          <td>ความแม่นยำ Forecast vs Actual</td>
+          <td>%</td>
+          <td>&gt;90%</td>
+        </tr>
+      </table>
+
+      <h3>2️⃣ Revenue Breakdown Chart</h3>
+      <p>รายรับแบ่งตามประเภท (Fix Fee, Storage, Services, etc.)</p>
+      <div class="alert alert-info">
+        <strong>💡 What to Look For:</strong> ประเภทไหนขึ้นมากที่สุด? ประเภทไหนตก? วิเคราะห์เหตุเพราะ
+      </div>
+
+      <h3>3️⃣ Trend Chart (7 Months YTD)</h3>
+      <p>แสดงแนวโน้มรายรับ-รายจ่าย-กำไร เป็น Line Chart</p>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="feature-card-icon">📈</div>
+          <div class="feature-card-title">Cumulative Mode</div>
+          <div class="feature-card-desc">แสดงสะสมตั้งแต่ต้นเดือน (Month 1-7)</div>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-card-icon">📊</div>
+          <div class="feature-card-title">Monthly Mode</div>
+          <div class="feature-card-desc">แสดงรายเดือน + เดือน 10 ไฮไลต์ (Bonus ประจำปี)</div>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-card-icon">4️⃣</div>
+          <div class="feature-card-title">4-Year Overlay</div>
+          <div class="feature-card-desc">เปรียบเทียบกับปี 2566, 2567, 2568</div>
+        </div>
+      </div>
+
+      <h3>4️⃣ Port Drill-Down</h3>
+      <p>เลือก Port (ทกท. / ทลฉ. / ทรน. / กทท.) แล้วดูรายละเอียด</p>
+      <table>
+        <tr>
+          <th>Port</th>
+          <th>ชื่อเต็ม</th>
+          <th>Revenue Model</th>
+        </tr>
+        <tr>
+          <td><strong>ทกท.</strong></td>
+          <td>ท่าเรือกรุงเทพ</td>
+          <td>Dwell Time → Storage Revenue (ความเป็นสัดส่วน)</td>
+        </tr>
+        <tr>
+          <td><strong>ทลฉ.</strong></td>
+          <td>ท่าเรือแหลมฉบัง</td>
+          <td>Fix Fee (ส่วนใหญ่) + Transshipment</td>
+        </tr>
+        <tr>
+          <td><strong>ทรน.</strong></td>
+          <td>ท่าเรือระนอง</td>
+          <td>Fix Fee เล็กน้อย + Regional Trade</td>
+        </tr>
+        <tr>
+          <td><strong>กทท.</strong></td>
+          <td>สำนักงานใหญ่</td>
+          <td>รวม / บริหาร</td>
+        </tr>
+      </table>
+
+      <h3>5️⃣ Special Insights — ทกท. "Dwell Time Chain"</h3>
+      <p><strong>สิ่งสำคัญที่สุด:</strong> ทกท. มีรูปแบบเงินกำไรที่ขึ้นอยู่กับ Dwell Time (เวลาคงท่า) มากกว่า Throughput</p>
+      <div class="code-block">
+Chain A: FCL Dwell ↑ → Storage Revenue ↑ → Repair Costs ↑ → Profit Pattern
+      </div>
+      <p style="font-size: 13px;">→ ดูแนวโน้ม Dwell Time ใน Dashboard ด้วย ไม่ใช่แค่ Revenue</p>
+
+      <h2>🎮 วิธีใช้ Dashboard</h2>
+
+      <div class="step-item">
+        <span class="step-number">1</span>
+        <div class="step-content">
+          <div class="step-title">เข้า Dashboard</div>
+          <div class="step-desc">จาก Homepage Hub คลิก Financial Card → เปิด Tab ใหม่</div>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <span class="step-number">2</span>
+        <div class="step-content">
+          <div class="step-title">เลือก Port & Month</div>
+          <div class="step-desc">ใช้ Dropdown เพื่อกรอง Port หรือ Time Period</div>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <span class="step-number">3</span>
+        <div class="step-content">
+          <div class="step-title">ดู KPI Cards</div>
+          <div class="step-desc">ดูรวม + YoY (ปีที่แล้ว) + 3-Year Avg</div>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <span class="step-number">4</span>
+        <div class="step-content">
+          <div class="step-title">ดู Charts</div>
+          <div class="step-desc">Trend + Drill-Down + Toggle Mode (Cumulative ↔ Monthly)</div>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <span class="step-number">5</span>
+        <div class="step-content">
+          <div class="step-title">Export</div>
+          <div class="step-desc">ปุ่ม Export → PDF หรือ Excel (เอกสารจะบันทึกตามเวลา)</div>
+        </div>
+      </div>
+
+      <div class="alert alert-warning">
+        <strong>⚠️ Important:</strong> ข้อมูลอาจมี lag 1-2 วัน จากระบบ Accounting ต้นฉบับ
+      </div>
+    </section>
+
+    <!-- ========== MOU PERFORMANCE GUIDE ========== -->
+    <section id="mou-guide" class="section">
+      <h1>📊 MOU Performance Dashboard — Guide</h1>
+      <p>ติดตาม 21 KPI ตามสัญญาวัตถุประสงค์ปี 2569 และการคาดการณ์ (Forecast)</p>
+
+      <h2>📋 โครงสร้าง MOU</h2>
+      <p>MOU ประกอบด้วย <strong>21 KPI</strong> แบ่งเป็น 3 หมวด:</p>
+
+      <table>
+        <tr>
+          <th>หมวด</th>
+          <th>น้ำหนัก</th>
+          <th>จำนวน KPI</th>
+          <th>อธิบาย</th>
+        </tr>
+        <tr>
+          <td><strong>หมวด 1</strong></td>
+          <td>15%</td>
+          <td>3 KPI</td>
+          <td>ประสิทธิภาพปฏิบัติการ (Operational)</td>
+        </tr>
+        <tr>
+          <td><strong>หมวด 2</strong></td>
+          <td>45%</td>
+          <td>9 KPI</td>
+          <td>การบริหารจัดการ (Management)</td>
+        </tr>
+        <tr>
+          <td><strong>หมวด 3 (SEPA)</strong></td>
+          <td>40%</td>
+          <td>9 KPI</td>
+          <td>เป้าหมายอื่นพิเศษ (Strategic)</td>
+        </tr>
+      </table>
+
+      <h2>🎯 ระดับคะแนน (KPI Scoring)</h2>
+
+      <h3>ระดับ 5 ขั้น</h3>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="feature-card-icon" style="color: #28a745;">🟢</div>
+          <div class="feature-card-title">Level 5 (Excellent)</div>
+          <div class="feature-card-desc">Actual ≥ Target (ถึงเป้าหมายขึ้นไป)</div>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-card-icon" style="color: #7fbf3f;">🟢</div>
+          <div class="feature-card-title">Level 4 (Good)</div>
+          <div class="feature-card-desc">Actual 80-100% ของ Target</div>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-card-icon" style="color: #ffa500;">🟡</div>
+          <div class="feature-card-title">Level 3 (Fair)</div>
+          <div class="feature-card-desc">Actual 60-80% ของ Target</div>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-card-icon" style="color: #ff8c42;">🟡</div>
+          <div class="feature-card-title">Level 2 (Poor)</div>
+          <div class="feature-card-desc">Actual 40-60% ของ Target</div>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-card-icon" style="color: #e74c3c;">🔴</div>
+          <div class="feature-card-title">Level 1 (Critical)</div>
+          <div class="feature-card-desc">Actual &lt; 40% ของ Target</div>
+        </div>
+      </div>
+
+      <h3>⚙️ วิธีคำนวณ Score</h3>
+      <p><strong>Linear Interpolation</strong> (ส่วนของระยะ)</p>
+      <div class="code-block">
+หาก Min=50, Max=100, Actual=75:
+  Score = 1 + (75-50)/(100-50) × 4
+  Score = 1 + 0.5 × 4 = 3.0
+      </div>
+
+      <div class="alert alert-info">
+        <strong>💡 Note:</strong> ทุก KPI ต่ำสุด Score = 1.0 (ไม่ต่ำกว่า) • ทศนิยม 4 ตำแหน่ง
+      </div>
+
+      <h2>📊 ส่วนประกอบ Dashboard</h2>
+
+      <h3>1️⃣ Overall Score Card</h3>
+      <table>
+        <tr>
+          <th>Item</th>
+          <th>ความหมาย</th>
+        </tr>
+        <tr>
+          <td><strong>Current Score</strong></td>
+          <td>คะแนนปัจจุบัน (Actual ปัจจุบัน)</td>
+        </tr>
+        <tr>
+          <td><strong>Forecast Score</strong></td>
+          <td>คะแนนที่คาดการณ์ (แบบ Manual)</td>
+        </tr>
+        <tr>
+          <td><strong>Target Score</strong></td>
+          <td>เป้าหมายปี 2569 = 3.75</td>
+        </tr>
+        <tr>
+          <td><strong>Status</strong></td>
+          <td>On Track / At Risk / Off Track</td>
+        </tr>
+      </table>
+
+      <h3>2️⃣ KPI Data Entry Table</h3>
+      <p>กรอกข้อมูล <strong>Actual</strong> ของแต่ละ KPI (ประจำไตรมาส)</p>
+      <div class="alert alert-success">
+        <strong>✅ Pro Tip:</strong> ข้อมูลจาก 4 Port แล้ว Aggregate ขึ้นมา → Overall MOU Score
+      </div>
+
+      <h3>3️⃣ Forecast Tab (คาดการณ์)</h3>
+      <p>กรอก Forecast คะแนน สำหรับ Month ที่จะมา (Manual Input)</p>
+      <div class="code-block">
+Q1 (Month 1-3): Forecast 3.6
+Q2 (Month 4-6): Forecast 3.7
+Q3 (Month 7-9): Forecast 3.8
+Q4 (Month 10-12): Forecast 3.9
+      </div>
+
+      <h3>4️⃣ Gap Analysis</h3>
+      <p>แสดง KPI ที่ต่ำกว่า 3.0 (เป้า Minimum) → ต้องมีแผนปรับปรุง</p>
+      <table>
+        <tr>
+          <th>KPI</th>
+          <th>Current Score</th>
+          <th>Target (3.75)</th>
+          <th>Gap</th>
+          <th>Action Plan</th>
+        </tr>
+        <tr>
+          <td>2.7 (ตัวอย่าง)</td>
+          <td>2.54</td>
+          <td>3.75</td>
+          <td>-1.21</td>
+          <td>มี 4 โปรแกรมปรับปรุง</td>
+        </tr>
+      </table>
+
+      <h2>🎮 วิธีใช้ Dashboard</h2>
+
+      <div class="step-item">
+        <span class="step-number">1</span>
+        <div class="step-content">
+          <div class="step-title">เข้า Dashboard</div>
+          <div class="step-desc">จาก Homepage Hub → MOU Performance Card</div>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <span class="step-number">2</span>
+        <div class="step-content">
+          <div class="step-title">ดู Overall Score</div>
+          <div class="step-desc">ตรวจสอบ Current / Forecast / Target → Status</div>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <span class="step-number">3</span>
+        <div class="step-content">
+          <div class="step-title">กรอก / อัปเดต Actual</div>
+          <div class="step-desc">ใส่ข้อมูล Actual ของแต่ละ KPI (ช่องสีขาว)</div>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <span class="step-number">4</span>
+        <div class="step-content">
+          <div class="step-title">กรอก Forecast</div>
+          <div class="step-desc">ไปที่ Forecast Tab → ใส่คะแนนที่คาดการณ์</div>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <span class="step-number">5</span>
+        <div class="step-content">
+          <div class="step-title">Export & Share</div>
+          <div class="step-desc">ปุ่ม Export → PDF สำหรับรายงาน / นำเสนอ</div>
+        </div>
+      </div>
+
+      <div class="alert alert-warning">
+        <strong>⚠️ Important Notes:</strong><br>
+        • ข้อมูลตั้งแต่ Month 1 → ไตรมาส ประมาณครึ่งไตรมาส<br>
+        • Forecast = Manual Input → ผู้ใช้กรอกเอง<br>
+        • Import/Export JSON: รองรับการรวม Multi-Department
+      </div>
+    </section>
+
+    <!-- ========== CBE ENABLERS GUIDE ========== -->
+    <section id="enablers-guide" class="section">
+      <h1>⚙️ CBE Enablers Assessment — Guide</h1>
+      <p>ประเมินระดับความสำเร็จของ 10 มิติการเปลี่ยนแปลง SE-AM CBE</p>
+
+      <h2>🎯 10 มิติ CBE Enablers</h2>
+      <table>
+        <tr>
+          <th>ลำดับ</th>
+          <th>มิติ (Dimension)</th>
+          <th>ชื่อเต็ม</th>
+          <th>Status</th>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td>HCM</td>
+          <td>Human Capital Management</td>
+          <td>✅ Complete</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>IM</td>
+          <td>Information Management</td>
+          <td>✅ Complete</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>SP</td>
+          <td>Strategic Partnership</td>
+          <td>✅ Complete</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>CG</td>
+          <td>Corporate Governance</td>
+          <td>🔄 WIP</td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td>RM&IC</td>
+          <td>Risk Management & Internal Control</td>
+          <td>🔄 WIP</td>
+        </tr>
+        <tr>
+          <td>6</td>
+          <td>SM</td>
+          <td>Stakeholder Management</td>
+          <td>✅ Complete</td>
+        </tr>
+        <tr>
+          <td>7</td>
+          <td>CM</td>
+          <td>Change Management</td>
+          <td>✅ Complete</td>
+        </tr>
+        <tr>
+          <td>8</td>
+          <td>DT</td>
+          <td>Digital Transformation</td>
+          <td>✅ Complete</td>
+        </tr>
+        <tr>
+          <td>9</td>
+          <td>KM</td>
+          <td>Knowledge Management</td>
+          <td>✅ Complete</td>
+        </tr>
+        <tr>
+          <td>10</td>
+          <td>IA</td>
+          <td>Innovation & Adaptation</td>
+          <td>✅ Complete</td>
+        </tr>
+      </table>
+
+      <h2>📊 Maturity Gating Scale (0-5)</h2>
+
+      <table>
+        <tr>
+          <th>Level</th>
+          <th>ชื่อเต็ม</th>
+          <th>คำอธิบาย</th>
+        </tr>
+        <tr>
+          <td><strong>0</strong></td>
+          <td>Non-Existent</td>
+          <td>ไม่มีกระบวนการหรือมีเพียงคำพูด</td>
+        </tr>
+        <tr>
+          <td><strong>1</strong></td>
+          <td>Initial</td>
+          <td>เริ่มต้น อาจไม่เป็นระบบ</td>
+        </tr>
+        <tr>
+          <td><strong>2</strong></td>
+          <td>Developing</td>
+          <td>มีระบบเบื้องต้น ยังไม่สมบูรณ์</td>
+        </tr>
+        <tr>
+          <td><strong>3</strong></td>
+          <td>Established</td>
+          <td>มีระบบเป็นทางการ และใช้ได้ดี</td>
+        </tr>
+        <tr>
+          <td><strong>4</strong></td>
+          <td>Optimized</td>
+          <td>ระบบปรับปรุงอย่างต่อเนื่อง</td>
+        </tr>
+        <tr>
+          <td><strong>5</strong></td>
+          <td>Innovative</td>
+          <td>นำร่อง / เป็นแนวหน้า ในระดับ Excellent</td>
+        </tr>
+      </table>
+
+      <h2>🔧 โครงสร้าง Dashboard</h2>
+
+      <h3>1️⃣ Dimension Selector</h3>
+      <p>เลือกมิติ (HCM, IM, SP, etc.) เพื่อดูรายละเอียด</p>
+
+      <h3>2️⃣ Sub-Item Checklist</h3>
+      <p>แต่ละมิติมี 4-16 sub-items (เช่น HCM มี: competency framework, training program, etc.)</p>
+      <div class="alert alert-info">
+        <strong>💡 Structure:</strong> ☐ Sub-Item → Click เพื่อ Expand → ดูระดับ 5 Frame
+      </div>
+
+      <h3>3️⃣ 5 Frames ต่อ Sub-Item</h3>
+      <table>
+        <tr>
+          <th>Frame</th>
+          <th>ความหมาย</th>
+          <th>ประเภท</th>
+        </tr>
+        <tr>
+          <td><strong>TRIS Gaps</strong></td>
+          <td>ช่องว่างตามรายงาน TRIS Feedback</td>
+          <td>💡 Text (ความต้องการ)</td>
+        </tr>
+        <tr>
+          <td><strong>Best Practice</strong></td>
+          <td>วิธีทำที่ดีที่สุด จากมาตรฐาน SEAM</td>
+          <td>📖 Text (Reference)</td>
+        </tr>
+        <tr>
+          <td><strong>กทท. Response</strong></td>
+          <td>แผนตอบสนองของ กทท. ที่เสนอต่อ สคร.</td>
+          <td>📄 Text (Answer)</td>
+        </tr>
+        <tr>
+          <td><strong>Evidence Needed</strong></td>
+          <td>เอกสารหลักฐานที่ต้องจัดเตรียม</td>
+          <td>📋 Checklist</td>
+        </tr>
+        <tr>
+          <td><strong>Operational Status</strong></td>
+          <td>สถานะปฏิบัติการขณะนี้</td>
+          <td>🟢🟡🔴 Status Badge</td>
+        </tr>
+      </table>
+
+      <h3>4️⃣ Maturity Gating Score Input</h3>
+      <p>กรอกคะแนน 0-5 สำหรับแต่ละ Sub-Item</p>
+      <div class="code-block">
+☐ Competency Framework → Score: 3 (Established)
+      </div>
+
+      <h3>5️⃣ localStorage Persistence</h3>
+      <p>ข้อมูลทั้งหมดบันทึกอัตโนมัติที่ Browser (localStorage) ไม่ต้องกด Save</p>
+
+      <h2>🎮 วิธีใช้ Dashboard</h2>
+
+      <div class="step-item">
+        <span class="step-number">1</span>
+        <div class="step-content">
+          <div class="step-title">เข้า Dashboard</div>
+          <div class="step-desc">จาก Homepage Hub → CBE Enablers Card</div>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <span class="step-number">2</span>
+        <div class="step-content">
+          <div class="step-title">เลือกมิติ</div>
+          <div class="step-desc">Dropdown / Tabs → HCM, IM, SP, DT, SM, CM, CG, RM&IC, KM, IA</div>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <span class="step-number">3</span>
+        <div class="step-content">
+          <div class="step-title">Expand Sub-Item</div>
+          <div class="step-desc">Click ☐ → เปิด 5 Frames (TRIS Gap + Best Practice + Response + Evidence + Status)</div>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <span class="step-number">4</span>
+        <div class="step-content">
+          <div class="step-title">กรอก Score</div>
+          <div class="step-desc">ใส่ Maturity Gating Score (0-5) สำหรับแต่ละ Sub-Item</div>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <span class="step-number">5</span>
+        <div class="step-content">
+          <div class="step-title">บันทึก & ดู Summary</div>
+          <div class="step-desc">ข้อมูล Auto-Save → ดู Overall Score & Dimension Average</div>
+        </div>
+      </div>
+
+      <div class="alert alert-success">
+        <strong>✅ Feature: AI-Assisted Draft Response</strong><br>
+        (Pilot สำหรับมิติ IM)<br>
+        • ที่ "กทท. Response" Frame → Click "Draft" button<br>
+        • Claude API จะดึง TRIS Gap + Best Practice → สร้าง Draft Bullet-Points<br>
+        • Edit + Refine → Copy-Paste ลง TRIS System
+      </div>
+    </section>
+
+    <!-- ========== LINKAGE MAP GUIDE ========== -->
+    <section id="linkage-guide" class="section">
+      <h1>🔗 CBE Enabler Linkage Map — Guide</h1>
+      <p>แสดงการเชื่อมโยงระหว่าง 10 มิติ CBE Enablers และจัดหมวดหมู่เอกสารหลักฐาน</p>
+
+      <h2>🎯 แนวคิด Linkage Map</h2>
+      <p><strong>ทำไมต้องมี Linkage Map?</strong> CBE Enablers 10 มิติ ไม่ใช่แยกต่างหาก แต่มีการเชื่อมโยง</p>
+
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="feature-card-icon">🔀</div>
+          <div class="feature-card-title">Dimension Links</div>
+          <div class="feature-card-desc">HCM ← KM ← DT ← CG</div>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-card-icon">📄</div>
+          <div class="feature-card-title">Evidence Documents</div>
+          <div class="feature-card-desc">Document links ยืนยัน Linkage</div>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-card-icon">⭐</div>
+          <div class="feature-card-title">Strength Points</div>
+          <div class="feature-card-desc">ด้านแข็ง + ด้านต้องปรับปรุง</div>
+        </div>
+      </div>
+
+      <h2>📊 โครงสร้าง Dashboard</h2>
+
+      <h3>1️⃣ Network Visualization (กลางหน้า)</h3>
+      <p>เสดแสดงแผนภาพเชื่อมโยง 10 มิติ ในรูป Network/Graph (แต่ละมิติ = Node)</p>
+      <div class="alert alert-info">
+        <strong>💡 How to Read:</strong><br>
+        • ปม (Node) = 1 Dimension<br>
+        • เส้น (Edge) = ความเชื่อมโยง<br>
+        • สี = ประเภทความสัมพันธ์ (Foundation / Enabler / Support)
+      </div>
+
+      <h3>2️⃣ Linkage Definition (รายละเอียด)</h3>
+      <p>บอกว่า Dimension A ได้รับอิทธิพลจาก Dimension B อย่างไร</p>
+      <table>
+        <tr>
+          <th>From</th>
+          <th>To</th>
+          <th>Link Type</th>
+          <th>คำอธิบาย</th>
+        </tr>
+        <tr>
+          <td><strong>CG</strong></td>
+          <td>HCM</td>
+          <td>Foundation</td>
+          <td>โครงสร้างการปกครอง → ก่ำหนด ช่องทางการบริหารคน</td>
+        </tr>
+        <tr>
+          <td><strong>KM</strong></td>
+          <td>DT</td>
+          <td>Enabler</td>
+          <td>ความรู้ → ขับเคลื่อน การเปลี่ยนดิจิทัล</td>
+        </tr>
+        <tr>
+          <td><strong>SM</strong></td>
+          <td>RM&IC</td>
+          <td>Support</td>
+          <td>การจัดการผู้มีส่วนได้ส่วนเสีย → ยืนยัน ความเสี่ยง</td>
+        </tr>
+      </table>
+
+      <h3>3️⃣ Document Category</h3>
+      <p>จัดหมวดหมู่เอกสารหลักฐาน (Evidence Document)</p>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="feature-card-icon">📋</div>
+          <div class="feature-card-title">Policy Documents</div>
+          <div class="feature-card-desc">นโยบาย / ข้อบัญญัติ</div>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-card-icon">📅</div>
+          <div class="feature-card-title">Process Documents</div>
+          <div class="feature-card-desc">ขั้นตอน / Workflow</div>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-card-icon">📊</div>
+          <div class="feature-card-title">Report & Metrics</div>
+          <div class="feature-card-desc">รายงาน / สถิติ</div>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-card-icon">🎓</div>
+          <div class="feature-card-title">Training Materials</div>
+          <div class="feature-card-desc">วัสดุอบรม / คู่มือ</div>
+        </div>
+      </div>
+
+      <h3>4️⃣ Upload & Link Documents</h3>
+      <p>ทำการอัปโหลด Google Drive link (ความเป็นสาระสำคัญ) และเชื่อมโยงกับมิติ</p>
+      <div class="code-block">
+📄 Document: "HCM Policy 2569"
+  ↓
+  Link to: [CG] [HCM] [KM]
+  ↓
+  Store: Google Drive (auto-backup)
+      </div>
+
+      <h2>🎮 วิธีใช้ Dashboard</h2>
+
+      <div class="step-item">
+        <span class="step-number">1</span>
+        <div class="step-content">
+          <div class="step-title">เข้า Dashboard</div>
+          <div class="step-desc">จาก Homepage Hub → Linkage Map Card</div>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <span class="step-number">2</span>
+        <div class="step-content">
+          <div class="step-title">ดู Network Visualization</div>
+          <div class="step-desc">ดูแผนภาพเชื่อมโยง 10 มิติ (สามารถ Drag เลื่อน)</div>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <span class="step-number">3</span>
+        <div class="step-content">
+          <div class="step-title">Explore Linkages</div>
+          <div class="step-desc">Click Node / Edge → ดูรายละเอียด Linkage Definition</div>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <span class="step-number">4</span>
+        <div class="step-content">
+          <div class="step-title">Upload Document</div>
+          <div class="step-desc">ปุ่ม "Add Document" → วาง Google Drive Link + เลือก Category + Linked Dimensions</div>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <span class="step-number">5</span>
+        <div class="step-content">
+          <div class="step-title">Track Progress</div>
+          <div class="step-desc">ดู Counter: "15/50 Documents Uploaded" → เป้า: 50 เอกสาร</div>
+        </div>
+      </div>
+
+      <div class="alert alert-success">
+        <strong>✅ Coin System Integration:</strong><br>
+        • Upload 5 เอกสาร = +3 Coins<br>
+        • สะสม 20 Coins = 1 Tarot Card Draw 🎴<br>
+        • Tarot = ความเฮง/คำแนะนำ สำหรับ Enablers dimension
+      </div>
+    </section>
+
+    <!-- ========== DATA DICTIONARY ========== -->
+    <section id="data-dictionary" class="section">
+      <h1>📑 Data Dictionary</h1>
+      <p>อธิบายศัพท์เทคนิค สมการ และฟิลด์ข้อมูลทั่วไปใน PAT Intelligence Hub</p>
+
+      <h2>📊 Key Metrics</h2>
+
+      <h3>Financial Metrics</h3>
+      <table>
+        <tr>
+          <th>Term (ศัพท์)</th>
+          <th>ความหมาย</th>
+          <th>สูตร</th>
+          <th>หน่วย</th>
+        </tr>
+        <tr>
+          <td><strong>Revenue (รายรับ)</strong></td>
+          <td>เงินที่เก็บได้จากการให้บริการท่าเรือ</td>
+          <td>Fix Fee + Variable Fee</td>
+          <td>Million Baht (M)</td>
+        </tr>
+        <tr>
+          <td><strong>Expense (รายจ่าย)</strong></td>
+          <td>ค่าใช้สอย เงินเดือน ค่าซ่อม</td>
+          <td>Operating Cost + Staff Cost</td>
+          <td>M</td>
+        </tr>
+        <tr>
+          <td><strong>Profit (กำไร)</strong></td>
+          <td>ส่วนเกิน ของรายรับเกินรายจ่าย</td>
+          <td>Revenue - Expense</td>
+          <td>M</td>
+        </tr>
+        <tr>
+          <td><strong>Profit Margin</strong></td>
+          <td>อัตราส่วนกำไรต่อรายรับ</td>
+          <td>(Profit / Revenue) × 100</td>
+          <td>%</td>
+        </tr>
+        <tr>
+          <td><strong>YTD</strong></td>
+          <td>ปีทางการ (Year To Date) 1 ม.ค. - สิ้นเดือนปัจจุบัน</td>
+          <td>Cumulative from Jan-current month</td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td><strong>Dwell Time</strong></td>
+          <td>เวลาที่คอนเทนเนอร์คงท่าที่ท่า (ทกท.)</td>
+          <td>Check-In to Check-Out Days</td>
+          <td>Days</td>
+        </tr>
+      </table>
+
+      <h3>MOU KPI Metrics</h3>
+      <table>
+        <tr>
+          <th>Term</th>
+          <th>ความหมาย</th>
+          <th>ช่วง Score</th>
+        </tr>
+        <tr>
+          <td><strong>Actual</strong></td>
+          <td>ผลลัพธ์จริงในปัจจุบัน</td>
+          <td>ขึ้นกับ KPI</td>
+        </tr>
+        <tr>
+          <td><strong>Target</strong></td>
+          <td>เป้าหมายที่ตั้งไว้สำหรับปี 2569</td>
+          <td>ค่าคงที่</td>
+        </tr>
+        <tr>
+          <td><strong>Forecast</strong></td>
+          <td>ค่าที่คาดการณ์จะถึง (Manual Input)</td>
+          <td>ขึ้นกับ KPI</td>
+        </tr>
+        <tr>
+          <td><strong>Score (1-5)</strong></td>
+          <td>คะแนนประเมินผล (Linear Interpolation)</td>
+          <td>1.0 - 5.0 (ทศนิยม 4 ตำแหน่ง)</td>
+        </tr>
+        <tr>
+          <td><strong>Min / Max</strong></td>
+          <td>ขีดจำกัดล่าง / บน สำหรับสูตร Score</td>
+          <td>KPI-specific</td>
+        </tr>
+      </table>
+
+      <h3>CBE Enablers Metrics</h3>
+      <table>
+        <tr>
+          <th>Term</th>
+          <th>ความหมาย</th>
+          <th>ช่วง</th>
+        </tr>
+        <tr>
+          <td><strong>Maturity Gating</strong></td>
+          <td>ระดับความสำเร็จ 0-5 ของแต่ละ Sub-Item</td>
+          <td>0 (None) - 5 (Innovative)</td>
+        </tr>
+        <tr>
+          <td><strong>Dimension Score</strong></td>
+          <td>คะแนนรวม 10 Sub-Items ÷ 10</td>
+          <td>0.0 - 5.0</td>
+        </tr>
+        <tr>
+          <td><strong>TRIS Gap</strong></td>
+          <td>ช่องว่างที่พบในรายงาน TRIS Feedback</td>
+          <td>Text description</td>
+        </tr>
+        <tr>
+          <td><strong>Best Practice</strong></td>
+          <td>วิธีทำที่ดีที่สุดตามมาตรฐาน SEAM Manual</td>
+          <td>Text reference</td>
+        </tr>
+      </table>
+
+      <h2>🏢 Port Codes & Terminology</h2>
+
+      <table>
+        <tr>
+          <th>Code</th>
+          <th>ชื่อเต็ม</th>
+          <th>ตัวย่อ</th>
+          <th>หน้าที่</th>
+        </tr>
+        <tr>
+          <td><strong>ทกท.</strong></td>
+          <td>ท่าเรือกรุงเทพ</td>
+          <td>Bangkok Port</td>
+          <td>คอนเทนเนอร์ / FCL / LCL</td>
+        </tr>
+        <tr>
+          <td><strong>ทลฉ.</strong></td>
+          <td>ท่าเรือแหลมฉบัง</td>
+          <td>Laem Chabang</td>
+          <td>คอนเทนเนอร์หลัก + Transshipment</td>
+        </tr>
+        <tr>
+          <td><strong>ทรน.</strong></td>
+          <td>ท่าเรือระนอง</td>
+          <td>Ranong</td>
+          <td>ท่าเรือภูมิภาค / Regional Trade</td>
+        </tr>
+        <tr>
+          <td><strong>กทท.</strong></td>
+          <td>กทท. (Head Office)</td>
+          <td>PAT HQ</td>
+          <td>บริหารองค์กร / รวมรวมข้อมูล</td>
+        </tr>
+      </table>
+
+      <h2>⚙️ Technical Codes</h2>
+
+      <h3>Dimension Abbreviations (10 มิติ CBE)</h3>
+      <div class="code-block">
+HCM = Human Capital Management
+IM = Information Management
+SP = Strategic Partnership
+CG = Corporate Governance
+RM&IC = Risk Management & Internal Control
+SM = Stakeholder Management
+CM = Change Management
+DT = Digital Transformation
+KM = Knowledge Management
+IA = Innovation & Adaptation
+      </div>
+
+      <h3>KPI Categories (MOU)</h3>
+      <div class="code-block">
+หมวด 1 (15% weight) = Operational Performance
+หมวด 2 (45% weight) = Management Effectiveness
+หมวด 3/SEPA (40% weight) = Strategic Objectives
+      </div>
+
+      <h2>📈 Scoring Formulas</h2>
+
+      <h3>Linear Interpolation (MOU KPI)</h3>
+      <p><strong>สูตร:</strong></p>
+      <div class="code-block">
+ถ้า Actual < Min: Score = 1.0
+ถ้า Actual ≥ Max: Score = 5.0
+ถ้า Min ≤ Actual < Max:
+  Score = 1 + ((Actual - Min) / (Max - Min)) × 4
+  แล้ว Round ไป 4 ทศนิยม
+      </div>
+
+      <h3>Example: Container Volume KPI</h3>
+      <div class="code-block">
+Min = 500K TEU
+Max = 600K TEU
+Actual = 540K TEU
+
+Score = 1 + ((540-500) / (600-500)) × 4
+      = 1 + (40/100) × 4
+      = 1 + 1.6
+      = 2.6000
+      </div>
+
+      <h2>📚 Common Abbreviations</h2>
+
+      <table>
+        <tr>
+          <th>Abbreviation</th>
+          <th>Full Name</th>
+          <th>ใช้ใน</th>
+        </tr>
+        <tr>
+          <td><strong>TEU</strong></td>
+          <td>Twenty-foot Equivalent Unit</td>
+          <td>Financial, Port Stats</td>
+        </tr>
+        <tr>
+          <td><strong>FCL</strong></td>
+          <td>Full Container Load</td>
+          <td>Port Operations</td>
+        </tr>
+        <tr>
+          <td><strong>LCL</strong></td>
+          <td>Less Than Container Load</td>
+          <td>Port Operations</td>
+        </tr>
+        <tr>
+          <td><strong>YoY</strong></td>
+          <td>Year over Year</td>
+          <td>Financial (เปรียบเทียบ)</td>
+        </tr>
+        <tr>
+          <td><strong>Avg</strong></td>
+          <td>Average</td>
+          <td>Financial (ค่าเฉลี่ย 3 ปี)</td>
+        </tr>
+        <tr>
+          <td><strong>MTY</strong></td>
+          <td>Empty Container Return</td>
+          <td>ทกท. (เรือเปล่า)</td>
+        </tr>
+        <tr>
+          <td><strong>SEAM</strong></td>
+          <td>Self-Evaluation Assessment Module</td>
+          <td>CBE Enablers</td>
+        </tr>
+      </table>
+
+      <div class="alert alert-info">
+        <strong>💡 ที่ไหนเมื่อต้องการเข้าใจศัพท์:</strong><br>
+        ใช้ Ctrl+F (Find) ในหน้านี้ เพื่อค้นหาคำที่ต้องการ
+      </div>
+    </section>
+
+    <!-- ========== FAQ ========== -->
+    <section id="faq" class="section">
+      <h1>❓ คำถามที่พบบ่อย (FAQ)</h1>
+
+      <h2>🏠 Homepage & Hub</h2>
+
+      <h3>Q: ฉันจะเข้า Hub ได้อย่างไร?</h3>
+      <p><strong>A:</strong> ไปที่ https://pdee-hub.github.io → เข้า Google Sign-In ด้วยอีเมล @port.co.th → ตรวจสอบ PIN (สำหรับ Financial)</p>
+
+      <h3>Q: ทำไมต้องมี PIN สำหรับ Financial Dashboard?</h3>
+      <p><strong>A:</strong> เนื่องจาก Financial Dashboard มีข้อมูลอ่อนไหว (รายรับ-รายจ่าย) → ต้อง Double Authentication ด้วย PIN (55039)</p>
+
+      <h3>Q: Dark Mode vs Light Mode — ควรใช้อันไหน?</h3>
+      <p><strong>A:</strong> ส่วนตัว: ใช้ Dark Mode ตอนค่ำ + Light Mode ตอนกลางวัน → ป้องกันการเหนื่อยตา</p>
+
+      <h2>💰 Financial Dashboard</h2>
+
+      <h3>Q: ข้อมูล Financial มี lag นานหน่อย ทำไม?</h3>
+      <p><strong>A:</strong> เนื่องจาก Hub ดึงข้อมูลจากระบบ Accounting ต้นฉบับที่อัปเดต 1-2 วันทีละครั้ง → ปกติจะมี lag นี้</p>
+
+      <h3>Q: Dwell Time คืออะไร? ทำไม ทกท. ต้องสนใจ?</h3>
+      <p><strong>A:</strong> Dwell Time = เวลาที่คอนเทนเนอร์ค้างท่า → เท่านาน ยิ่งมีค่า Storage Revenue มาก → ทกท. ขึ้นกำไรเมื่อ Dwell Time นาน</p>
+
+      <h3>Q: ทำไม ทลฉ. มี Fix Fee ส่วนใหญ่ แล้ว ทกท. ไม่?</h3>
+      <p><strong>A:</strong> Business Model ต่างกัน: ทลฉ. = สัญญาระยะยาวกับ Shipping Line → Fix Fee • ทกท. = คูลี่-ตามสินค้า → Variable Fee</p>
+
+      <h2>📊 MOU Performance</h2>
+
+      <h3>Q: Score 1-5 คิดอย่างไร? ทำไมไม่ใช้ 0-100?</h3>
+      <p><strong>A:</strong> ตามมาตรฐาน สคร. → ใช้ 5-point Scale → และ Linear Interpolation (ไม่ Jump ทันใจ)</p>
+
+      <h3>Q: ทำไม Minimum Score = 1.0 ไม่ใช่ 0?</h3>
+      <p><strong>A:</strong> ตามหลักการ: แม้ Actual น้อยมาก ยังต้องให้เครดิต Effort → Score ต่ำสุด = 1.0 (ยังมีความพยายาม)</p>
+
+      <h3>Q: Forecast คืออะไร? ต้องกรอกไหม?</h3>
+      <p><strong>A:</strong> Forecast = ค่าที่คาดการณ์ว่าจะถึง (Manual Input) → ใช้สำหรับวางแผน / เตรียมใจ → ไม่บังคับ แต่ดีที่สุดให้กรอก</p>
+
+      <h2>⚙️ CBE Enablers</h2>
+
+      <h3>Q: Maturity Gating 0-5 แล้ว Sub-Item ก็มีเยอะ — ต้องกรอกทั้งหมดไหม?</h3>
+      <p><strong>A:</strong> ใช่ → ทั้ง 10 มิติ × 4-16 Sub-Item ต่อมิติ → ประมาณ 80-150 Sub-Items รวม → แต่ยังค่อย ๆ ทำไป</p>
+
+      <h3>Q: Best Practice แล้วแต่ SAP? Guideline ไหน?</h3>
+      <p><strong>A:</strong> Best Practice = ตามมาตรฐาน SEAM Manual 2569 สคร. + Feedback Reports ที่ปังมาก 3 ปี</p>
+
+      <h3>Q: Evidence needed = อะไร? ต้องนำเสนออะไร?</h3>
+      <p><strong>A:</strong> Evidence = เอกสารพยาน (Policy / Process / Report / Training) → ใช้สำหรับ TRIS Presentation → ยิ่งมี ยิ่งดี</p>
+
+      <h2>🔗 Linkage Map</h2>
+
+      <h3>Q: Linkage Map ใช้ทำอะไร? ทำไมสำคัญ?</h3>
+      <p><strong>A:</strong> แสดง 10 มิติไม่ใช่เดี่ยวๆ → มีการเชื่อมโยง → Knowledge Management ← Digital Transformation ← Knowledge ← Enabler chain</p>
+
+      <h3>Q: ถ้าไม่อัปโหลด Document แล้ว?</h3>
+      <p><strong>A:</strong> ยังไม่บังคับ แต่ดีที่สุด → Documents ยิ่งมาก Linkage ยิ่งชัดเจน → สะสม 50 เอกสารได้ Tarot Card 🎴</p>
+
+      <h2>📚 Technical & General</h2>
+
+      <h3>Q: ทำไม Hub ใช้ Dark Mode เป็นตั้งแต่แรก?</h3>
+      <p><strong>A:</strong> Design choice: Dark Mode = ลดความสำคัญตา + ดูเป็นสมัยใหม่ + แนวโน้มท่าเรือสมัยใหม่ (Operational Center style)</p>
+
+      <h3>Q: ข้อมูลใน Hub ได้รับการอนุมัติแล้วหรือยัง?</h3>
+      <p><strong>A:</strong> ใช่ → Data มา PAT Data Catalog (ระบบ Authorized) → แต่ยังต้องยืนยันด้วยระบบต้นฉบับเสมอ</p>
+
+      <h3>Q: ใครออกแบบ Hub นี้?</h3>
+      <p><strong>A:</strong> PAT Organizational Performance Evaluation Division → ทำเพื่อให้ข้อมูลมีประสิทธิใช้ + Actionable</p>
+
+      <h3>Q: ติดต่อใครถ้ามีปัญหา?</h3>
+      <p><strong>A:</strong> Footer → Support Section → "Contact Admin" → ส่งรายงานปัญหา / Feedback</p>
+
+      <div class="alert alert-success">
+        <strong>✅ ยังมีคำถามอื่น?</strong><br>
+        ไปที่ "Contact Admin" ในหน้า Homepage Hub หรือตอบกลับในช่องความเห็น 💬
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ========== FOOTER ========== -->
+  <footer>
+    <p>📚 PAT Intelligence Hub — User Documentation v1.0</p>
+    <p>© 2024 Port Authority of Thailand • Last Updated: June 16, 2026</p>
+    <p>สำหรับข้อมูลเพิ่มเติม ติดต่อ PAT Organizational Performance Evaluation Division 📧</p>
+  </footer>
+
+  <!-- ========== SCRIPT ========== -->
+  <script>
+    // ========== THEME TOGGLE ==========
+    const themeToggle = document.getElementById('themeToggle');
+    const htmlElement = document.documentElement;
+
+    const savedTheme = localStorage.getItem('docTheme') || 'dark';
+    htmlElement.setAttribute('data-theme', savedTheme);
+    updateThemeIcon();
+
+    themeToggle.addEventListener('click', () => {
+      const currentTheme = htmlElement.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      htmlElement.setAttribute('data-theme', newTheme);
+      localStorage.setItem('docTheme', newTheme);
+      updateThemeIcon();
+    });
+
+    function updateThemeIcon() {
+      const currentTheme = htmlElement.getAttribute('data-theme');
+      themeToggle.textContent = currentTheme === 'dark' ? '☀️' : '🌙';
+    }
+
+    // ========== SIDEBAR NAVIGATION ==========
+    function showSection(sectionId) {
+      // Hide all sections
+      const sections = document.querySelectorAll('.section');
+      sections.forEach(section => {
+        section.classList.remove('active');
+      });
+
+      // Show selected section
+      document.getElementById(sectionId).classList.add('active');
+
+      // Update sidebar active state
+      const items = document.querySelectorAll('.sidebar-item');
+      items.forEach(item => {
+        item.classList.remove('active');
+      });
+      event.target.classList.add('active');
+
+      // Scroll to top
+      document.querySelector('.main-content').scrollTop = 0;
+    }
+
+    // ========== SIDEBAR AUTO-HIGHLIGHT ==========
+    document.addEventListener('DOMContentLoaded', () => {
+      // Set first sidebar item active by default
+      document.querySelector('.sidebar-item').classList.add('active');
+    });
+  </script>
+</body>
+</html>
